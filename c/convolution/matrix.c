@@ -10,19 +10,18 @@
 struct matrix
 {
     int rows, cols, length;
-    unsigned char *data;
+    unsigned char (*data)[3];
 };
 
 typedef struct matrix Matrix;
 
-Matrix loadImageMatrix(Image i, int channel)
+Matrix loadImageMatrixx(Image im, int channel)
 {
     Matrix m;
 
-    m.rows = i.height;
-    m.cols = i.width;
-    m.length = i.width * i.height;
-    //TODO
+    m.rows = im.height;
+    m.cols = im.width;
+    m.length = im.width * im.height;
 
     return m;
 }
@@ -40,29 +39,32 @@ void showMatrix(int n, int matrix[n][n])
     }
 }
 
-void loadImageMatrixx(Image image, int channel);
+void loadImageMatrix(Image image, int channel);
 
 int main()
 {
     Image img;
 
-    img = loadImage("emoticon.png");
+    img = loadImage("test.png");
 
-
+    printf("SHOW IMAGE:\n");
 
     for (int c=0; c < img.channels; c++)
     {
         loadImageMatrix(img, c);
-        printf("CHANNEL DONE");
+        printf("CHANNEL DONE!\n");
     }   
 
     return 0;
 }
 
-void loadImageMatrixx(Image image, int channel)
+void loadImageMatrix(Image image, int channel)
 {
-    for (int i=0; i < image.width; i++)
-        for (int j=0; j < image.height; j++)
+    int result[image.height][image.width][3];
+    printf("CHANNEL %d:\n", channel); 
+    for (int i=0; i < image.height; i++)
+    {
+        for (int j=0; j < image.width; j++)
         {
             unsigned bytePerPixel = channel;
             unsigned char *pixelOffset = image.img + (i + image.width * j) * bytePerPixel;
@@ -71,8 +73,14 @@ void loadImageMatrixx(Image image, int channel)
             unsigned char b = pixelOffset[2];
             unsigned char a = channel >= 4 ? pixelOffset[3] : 0xff;
 
-            printf("(%d, %d, %d)\n", r, g, b);
+            // printf("(%d, %d, %d)\n", r, g, b);
+            result[i][j][0] = r;
+            result[i][j][1] = g;
+            result[i][j][2] = b;
+            printf("(%d, %d, %d)  ", result[i][j][0], result[i][j][1], result[i][j][2]);
         }
+        printf("\n");
+    }
 
     //int matrix[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};    // {1, 2, 3, 4} or {{1, 2}, {3, 4}}
     
