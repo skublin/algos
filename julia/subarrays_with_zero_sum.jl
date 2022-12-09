@@ -1,5 +1,6 @@
 
 function allSubarraysBruteForce(array)
+    # brute force method
     l = length(array)
 
     for i in 1:l
@@ -14,10 +15,12 @@ function allSubarraysBruteForce(array)
 end
 
 function insert(d, key, value)
+    # utility function to add value to arrray at key in dictionary d or create empty array and then add value
     d[key] = push!(get(d, key, []), value)
 end
 
 function allSubarraysMultimap(array)
+    # second way to get subarrays
     d = Dict()
 
     insert(d, 1, -1)
@@ -41,12 +44,15 @@ function allSubarraysMultimap(array)
     end
 end
 
+# create new array with numbers
 numbers = [1, -1, 2, -1, 0, 1]
 println("Array: $numbers")
 
+# print results for brute force method
 println("Brute Force:")
 allSubarraysBruteForce(numbers)
 
+# print results from multimap method
 println("Multimap:")
 allSubarraysMultimap(numbers)
 
